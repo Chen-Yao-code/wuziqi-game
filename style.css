@@ -1,0 +1,58 @@
+.container {
+    text-align: center;
+    margin: 20px auto;
+}
+
+#board {
+    width: 600px;
+    height: 600px;
+    margin: 20px auto;
+    background: #f0d9b5;
+    border: 2px solid #000;
+    position: relative;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border: 1px solid #000;
+    box-sizing: border-box;
+}
+
+.chess {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.chess.black {
+    background: radial-gradient(circle at 65% 35%, #666, #000);
+}
+
+.chess.white {
+    background: radial-gradient(circle at 65% 35%, #fff, #ccc);
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+.controls button {
+    padding: 8px 16px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.controls button:hover {
+    background: #45a049;
+}

@@ -1,5 +1,5 @@
 const BOARD_SIZE = 15; // 15x15棋盘
-let CELL_SIZE; // 动态计算格子尺寸（根据实际布局调整）
+const CELL_SIZE = 40; // 每个格子尺寸
 let board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0)); // 棋盘状态：0空 1黑 2白
 let currentPlayer = 1; // 当前玩家（1黑先下）
 let history = []; // 落子历史
@@ -12,10 +12,8 @@ function initBoard() {
         for (let j = 0; j < BOARD_SIZE; j++) {
             let cell = document.createElement('div');
             cell.className = 'cell';
-            // 动态获取格子尺寸（基于CSS计算值）
-        CELL_SIZE = document.querySelector('.cell')?.offsetWidth || 40;
-        cell.style.left = `${j * CELL_SIZE}px`;
-        cell.style.top = `${i * CELL_SIZE}px`;
+            cell.style.left = `${j * CELL_SIZE}px`;
+            cell.style.top = `${i * CELL_SIZE}px`;
             cell.dataset.x = i;
             cell.dataset.y = j;
             cell.addEventListener('click', onCellClick);
@@ -45,8 +43,6 @@ function onCellClick(e) {
     if (checkWin(x, y)) {
         setTimeout(() => {
             alert(`玩家${currentPlayer === 1 ? '黑棋' : '白棋'}胜利！`);
-            // 胜利后自动重新开始
-            document.getElementById('restart').click();
         }, 10);
         return;
     }

@@ -56,12 +56,15 @@ function onCellClick(e) {
     // 检查胜负
     if (checkWin(x, y)) {
         setTimeout(() => {
-            alert(`玩家${currentPlayer === 1 ? '黑棋' : '白棋'}胜利！`).then(() => {
+            //弹出alert，确认后restartGame
+            const winner = currentPlayer === 1 ? "黑棋" : "白棋";
+            if (confirm(`${winner}获胜！是否重新开始游戏？`)) {
                 restartGame();
-            });
+            }
         }, 10);
         return;
     }
+
 
     // 切换玩家
     currentPlayer = currentPlayer === 1 ? 2 : 1;

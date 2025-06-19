@@ -4,29 +4,32 @@
 }
 
 #board {
-    width: 600px;
-    height: 600px;
+    width: 90vw;
+    height: 90vw;
+    max-width: 600px;
+    max-height: 600px;
     margin: 20px auto;
     background: #f0d9b5;
     border: 2px solid #000;
     position: relative;
+    aspect-ratio: 1/1; /* 保持宽高比 */
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
+    width: calc(100% / 15); /* 15列自适应 */
+    height: calc(100% / 15); /* 15行自适应 */
     position: absolute;
     border: 1px solid #000;
     box-sizing: border-box;
 }
 
 .chess {
-    width: 32px;
-    height: 32px;
+    width: 80%;
+    height: 80%;
     border-radius: 50%;
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 10%;
+    left: 10%;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 

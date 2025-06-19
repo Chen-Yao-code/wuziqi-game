@@ -4,29 +4,32 @@
 }
 
 #board {
-    width: 600px;
-    height: 600px;
+    width: min(90vw, 90vh);  /* 取视口宽高较小值的90% */
+    max-width: 600px;
     margin: 20px auto;
     background: #f0d9b5;
     border: 2px solid #000;
     position: relative;
+    aspect-ratio: 1/1;  /* 保持棋盘正方形 */
 }
 
 .cell {
-    width: 40px;
-    height: 40px;
+    width: calc(100% / 15);  /* 基于棋盘实际宽度计算 */
+    height: calc(100% / 15);
+    max-width: 40px;
+    max-height: 40px;
     position: absolute;
     border: 1px solid #000;
     box-sizing: border-box;
 }
 
 .chess {
-    width: 32px;
-    height: 32px;
+    width: calc(80% / 15);
+    height: calc(80% / 15);
     border-radius: 50%;
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 10%;
+    left: 10%;
     box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
 }
 

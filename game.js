@@ -1,5 +1,5 @@
 const BOARD_SIZE = 15; // 15x15棋盘
-const CELL_SIZE = 40; // 每个格子尺寸
+let cellSize; // 动态计算的格子尺寸
 let board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0)); // 棋盘状态：0空 1黑 2白
 let currentPlayer = 1; // 当前玩家（1黑先下）
 let history = []; // 落子历史
@@ -12,8 +12,21 @@ function initBoard() {
         for (let j = 0; j < BOARD_SIZE; j++) {
             let cell = document.createElement('div');
             cell.className = 'cell';
-            cell.style.left = `${j * CELL_SIZE}px`;
-            cell.style.top = `${i * CELL_SIZE}px`;
+            // 先添加所有cell再统一计算尺寸（避免渲染前获取宽度不准）
+            boardElement.appendChild(cell); // 先添加元素但不设置位置
+
+        // 所有cell创建完成后统一设置位置
+        if(i === BOARD_SIZE - 1 && j === BOARD_SIZE - 1) {
+            const firstCell = boardElement.querySelector('.cell');
+            cellSize = parseFloat(getComputedStyle(firstCell).width);
+            // 遍历所有cell设置正确位置
+            boardElement.querySelectorAll('.cell').forEach((cell, index) => {
+                const i = Math.floor(index / BOARD_SIZE);
+                const j = index % BOARD_SIZE;
+                cell.style.left = `${j * cellSize}px`;
+                cell.style.top = `${i * cellSize}px`;
+            });
+        }
             cell.dataset.x = i;
             cell.dataset.y = j;
             cell.addEventListener('click', onCellClick);
@@ -35,20 +48,34 @@ function onCellClick(e) {
     // 绘制棋子
     let chess = document.createElement('div');
     chess.className = `chess ${currentPlayer === 1 ? 'black' : 'white'}`;
-    chess.style.left = `${y * CELL_SIZE + 4}px`;
-    chess.style.top = `${x * CELL_SIZE + 4}px`;
+    // 根据动态格子尺寸计算棋子位置
+    chess.style.left = `${y * cellSize + cellSize * 0.1}px`;
+    chess.style.top = `${x * cellSize + cellSize * 0.1}px`;
     boardElement.appendChild(chess);
 
     // 检查胜负
     if (checkWin(x, y)) {
         setTimeout(() => {
-            alert(`玩家${currentPlayer === 1 ? '黑棋' : '白棋'}胜利！`);
+            alert(`玩家${currentPlayer === 1 ? '黑棋' : '白棋'}胜利！`).then(() => {
+                restartGame();
+            });
         }, 10);
         return;
     }
 
     // 切换玩家
     currentPlayer = currentPlayer === 1 ? 2 : 1;
+}
+
+// 窗口调整时重新初始化棋盘
+window.addEventListener('resize', initBoard);
+
+// 重新开始游戏
+function restartGame() {
+    board = Array(BOARD_SIZE).fill().map(() => Array(BOARD_SIZE).fill(0));
+    history = [];
+    currentPlayer = 1;
+    initBoard();
 }
 
 // 胜负判断（检查当前落子位置是否形成五子连珠）
@@ -86,6 +113,9 @@ document.getElementById('undo').addEventListener('click', () => {
     boardElement.removeChild(boardElement.lastChild);
     currentPlayer = last.player; // 恢复当前玩家
 });
+
+// 初始加载时初始化棋盘
+initBoard();
 
 // 重新开始
 document.getElementById('restart').addEventListener('click', () => {
